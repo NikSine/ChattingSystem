@@ -263,9 +263,6 @@
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
