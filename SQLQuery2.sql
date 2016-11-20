@@ -1,0 +1,1 @@
+﻿DBCC CHECKIDENT('Messages', RESEED, 0);

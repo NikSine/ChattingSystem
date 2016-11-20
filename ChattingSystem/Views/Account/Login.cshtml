@@ -1,0 +1,27 @@
+﻿@model ChattingSystem.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+}
+<div class="formsblock">
+    <h2>Логин</h2>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            @Html.ValidationSummary()
+            <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+            <p>
+                <label>Email</label><br />
+                @Html.EditorFor(x => x.Email)
+            </p>
+            <p>
+                <label>Пароль</label><br />
+                @Html.EditorFor(x => x.Password)
+            </p>
+            <p><button id="login" type="submit">Войти</button></p>
+            @Html.ActionLink("Регистрация", "Register", "Account")
+        </div>
+    }
+</div>

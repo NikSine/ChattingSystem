@@ -1,0 +1,54 @@
+﻿@model ChattingSystem.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+}
+<div class="formsblock">
+    <h2>Регистрация</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            <hr />
+            @Html.ValidationSummary(false)
+
+            <div>
+                Электронный адрес
+                <div>
+                    @Html.EditorFor(model => model.Email)
+                </div>
+            </div>
+            <br />
+            <div>
+                Никнейм
+                <div>
+                    @Html.EditorFor(model => model.ChatName)
+                </div>
+            </div>
+            <br />
+            <div>
+                Пароль
+                <div>
+                    @Html.EditorFor(model => model.Password)
+                </div>
+            </div>
+            <br />
+            <div>
+                Подтвердить пароль
+                <div>
+                    @Html.EditorFor(model => model.PasswordConfirm)
+                </div>
+            </div>
+            <br />
+            <div>
+                <div>
+                    <input id="register" type="submit" value="Зарегистрировать" />
+                </div>
+            </div>
+            <br />
+            @Html.ActionLink("Уже зарегистрированы?", "Login", "Account")
+        </div>
+    }
+</div>

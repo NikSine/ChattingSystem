@@ -1,0 +1,29 @@
+@model SmartChat.Models.ViewModels.CreateUserModel
+<div class="container">
+    <div class="row row-centered">
+        <div id="registrclass">
+            <div style="text-align: center">
+                @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <p><h1>@Html.Label("Registration")</h1></p>
+                    <p>@Html.ValidationMessageFor(m => m.UserName)</p>
+                    <p>@Html.TextBoxFor(m => m.UserName, new { placeholder = Html.DisplayNameFor(m => m.UserName), @class = "form-control" })</p>
+                    <p>@Html.ValidationMessageFor(m => m.Email)</p>
+                    <p>@Html.TextBoxFor(m => m.Email, new { placeholder = Html.DisplayNameFor(m => m.Email), @class = "form-control" })</p>
+                    <p>@Html.ValidationMessageFor(m => m.Password)</p>
+                    <p>@Html.PasswordFor(m => m.Password, new { placeholder = Html.DisplayNameFor(m => m.Password), @class = "form-control" })</p>
+                    <p>@Html.ValidationMessageFor(m => m.ConfirmPassword)</p>
+                    <p>@Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = Html.DisplayNameFor(m => m.ConfirmPassword), @class = "form-control" })</p>
+                    <p>
+                    </p>
+                    <p><input type="submit" name="Registrate" value="Registrate" class="btn btn-success btn-lg" /></p>    
+                    <p>
+                        <a href="#"><img src="https://pbs.twimg.com/profile_images/3513354941/24aaffa670e634a7da9a087bfa83abe6_200x200.png" class="social img-circle ballmargin imganim" width=50px id="img2"></a>
+                        <a href="#"><img src=https://play.google.com/books/publish/static/images/google-search.png class="social img-circle ballmargin imganim" width=50px id="img3"></a> </p>                            
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@*k*@

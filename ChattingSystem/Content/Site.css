@@ -1,0 +1,97 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color:#14141f;
+    color:white;
+}
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+    background-color : #14141f; 
+    color:white;
+}
+.formsblock{
+    text-align:center;
+}
+#sendmessage, #login, #register{
+    background-color:#14141f;
+    color:white;
+}
+#sendmessage:hover, #login:hover, #login:hover, #update:hover{
+    background-color:grey;
+}
+.chat{
+ text-align:center;
+ margin:0 auto;
+
+}
+.border{
+     border:1px solid white;
+     display:inline-block;
+     vertical-align: top;
+}
+h2{
+    text-align:center;
+}
+#message{
+    width:550px;
+}
+.messagein{
+    border:1px solid white;
+    text-align:left;
+    height:100px;
+    word-wrap: break-word;
+}
+
+.validation-summary-errors {
+    border:1px solid red;
+    background-color:#ff8080;
+    text-align:center;
+}
+.chatimage{
+    height:50px;
+    width:50px;
+    border-radius:50%;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  position:absolute;
+  margin: 0 auto;
+  top:38%;
+  left:42%;
+  z-index: 9999;
+}
+#discussion{
+    position:relative
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#photo{
+
+    margin:auto
+}
+#nickname{
+    border:1px solid #14141f;
+}
