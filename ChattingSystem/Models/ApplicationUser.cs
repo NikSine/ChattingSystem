@@ -12,6 +12,8 @@ namespace ChattingSystem.Models
 
         public string ChatName { get; set; }
 
+        public string UserConnectionId { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
@@ -20,10 +22,12 @@ namespace ChattingSystem.Models
 
         // Тут устанавливаем связь с нашей таблицей
         public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<PrivateMessage> PrivateMessages { get; set; }
 
         public ApplicationUser()
         {
             Messages = new List<Message>();
+            PrivateMessages = new List<PrivateMessage>();
         }
     }
 }

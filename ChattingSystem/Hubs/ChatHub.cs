@@ -15,13 +15,16 @@ namespace ChattingSystem.Hubs
     {
         private static readonly Dictionary<string, string> Users = new Dictionary<string, string>();
 
+        
+
         ApplicationContext context = new ApplicationContext();
 
         public void Send(string message)
         {
+            int id=0;
             if (message != "")
             {
-                var currentUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(HttpContext.Current.User.Identity.GetUserId());               
+                var currentUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(HttpContext.Current.User.Identity.GetUserId());
 
                 var task = Task.Run(async () =>
                 {
@@ -39,16 +42,39 @@ namespace ChattingSystem.Hubs
 
                     var currentUserName = currentUser.ChatName;
 
+                    id = currentMessage.Id;
+
                     return currentUserName;
 
                 });
 
                 var photo = currentUser.Photo;
 
-                Clients.All.addMessage(task.Result, message, photo);
+                Clients.All.addMessage(task.Result, id, message, photo);
             }
         }
-    
+
+        public void SendPrivateMessage(string toUserId, string message)
+        {
+
+            string fromUserId = Context.ConnectionId;
+
+            var toUser = Users.FirstOrDefault(x => x.Key == toUserId);
+            var fromUser = Users.FirstOrDefault(x => x.Key == fromUserId);
+
+            if (toUser.Key != null && fromUser.Key != null)
+            {
+                // send to 
+                Clients.Client(toUserId).sendPrivateMessage(fromUserId, fromUser.Value, message);
+
+                // send to caller user
+                Clients.Caller.sendPrivateMessage(toUserId, fromUser.Value, message);
+
+            }
+
+        }
+
+
 
         public override Task OnDisconnected(bool stopCalled)
         {
@@ -70,7 +96,7 @@ namespace ChattingSystem.Hubs
 
             string name = currentUser.ChatName;
 
-            var messages = from user in context.Users join message in context.Messages on user.Id equals message.UserId select new { user.ChatName, user.Photo, message.MessageText };
+            var messages = from user in context.Users join message in context.Messages on user.Id equals message.UserId select new { user.ChatName, user.Photo, message.MessageText, message.Id};
 
             if (Users.Values.All(x => x != name))
             {

@@ -4,9 +4,9 @@
     ViewBag.Title = "Chat";
 }
 
-    <div style="display:flex; justify-content:space-around; flex-direction:row; flex-wrap:wrap">
+    <div id ="container" style="display:flex; justify-content:space-around; flex-direction:row; flex-wrap:wrap">
         <div style="display:flex; flex-direction:column; width:60%;">
-        <div id="room" class="border" style="overflow-y:auto">    
+        <div id="room" class="border" style="overflow:auto">    
             <div id="discussion" style="height:700px">
                 <div class="loader"></div>
             </div>
@@ -58,6 +58,8 @@
     </div>
 
 @section scripts {
+<link href='@Url.Content("~/Content/themes/base/all.css")' rel="stylesheet" type="text/css" />
+<script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
     <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script src="~/scripts/Chat.js"></script>

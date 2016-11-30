@@ -5,6 +5,7 @@ namespace ChattingSystem.Models
     public class RegisterModel
     {
         [Required]
+        [EmailAddress(ErrorMessage = "Неверный email")]
         public string Email { get; set; }
 
         [Required]

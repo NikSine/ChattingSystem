@@ -54,7 +54,10 @@ namespace ChattingSystem.Controllers
                 {
                     fileName = Path.GetFileName(messagefile.FileName);
                     var path = Path.Combine(Server.MapPath("~/Files/"), fileName);
-                    messagefile.SaveAs(path);
+                    if (!path.Contains(fileName))
+                    {
+                        messagefile.SaveAs(path);
+                    }            
                 }
             }
             var completepath = Request.Url.GetLeftPart(UriPartial.Authority)+"/Chat/Download?FileName="+fileName;

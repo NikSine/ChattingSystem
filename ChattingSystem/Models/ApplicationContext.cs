@@ -13,6 +13,8 @@ namespace ChattingSystem.Models
 
         public DbSet<Message> Messages { get; set; }
 
+        public DbSet<PrivateMessage> PrivateMessages { get; set; }
+
         public static ApplicationContext Create()
         {
             return new ApplicationContext();
