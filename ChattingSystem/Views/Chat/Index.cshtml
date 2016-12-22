@@ -6,17 +6,18 @@
 
     <div id ="container" style="display:flex; justify-content:space-around; flex-direction:row; flex-wrap:wrap">
         <div style="display:flex; flex-direction:column; width:60%;">
-        <div id="room" class="border" style="overflow:auto">    
-            <div id="discussion" style="height:700px">
+        <div id="room" class="border">    
+            <div id="discussion" style="height:650px; overflow-y:auto;">
                 <div class="loader"></div>
             </div>
         </div>
             <div>
                 <input style="max-width:100%;" type="text" id="message" placeholder="Ввод сообщения" />
-                <input type="button" id="sendmessage" value="Send" />
-
-                   <input type="file" name="messagefile" id="messagefile">
-
+                <input type="button" id="sendmessage" value="Отправить" />
+                <label for="messagefile" class="folder">
+                    <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+                    <input type="file" name="messagefile" id="messagefile" style="display:none;">
+                </label>
             </div>
         </div>
         <div style="display:flex; flex-direction:column; width:30%; text-align:center"> 
@@ -28,9 +29,9 @@
                         <br>
                         if (Model.Photo != null)
                         {
-                            var base64 = Convert.ToBase64String(Model.Photo);
-                            var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-                            <img id="userimg" class="border" style="height:200px; width:200px" src="@imgSrc" />
+                            //var base64 = Convert.ToBase64String(Model.Photo);
+                            //var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <img id="userimg" class="border" style="height:200px; width:auto" src="@Model.Photo" />
                         }
                         else
                         {
@@ -40,12 +41,12 @@
                         <br/>
                         <input type="file" id="photo" name="photo" value="Выберите фото" accept="image/*" />
                         <br />
-                        <div>Никнейм: <input type="text" id="nickname" name="nickname" value="@Model.ChatName"/></div>
+                        <div class="nick">Никнейм: <input type="text" id="nickname" name="nickname" value="@Model.ChatName"/></div>
                         <br />
                         <input type="submit" id="update" value="Обновить"/>
                      }
                     <br>
-                    <p><a href="@Url.Action("Logout","Account")" id="logout">Logout</a></p>
+                    <p><a href="@Url.Action("Logout","Account")" id="logout">Выйти</a></p>
                 </div>
             </div>
             <div id="chatusers" class="border" style="height:215px; overflow-y:auto">

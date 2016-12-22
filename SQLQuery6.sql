@@ -1,0 +1,3 @@
+﻿DELETE FROM Comments;
+DELETE FROM Messages;
+DELETE FROM AspNetUsers;

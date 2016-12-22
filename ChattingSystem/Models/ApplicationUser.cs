@@ -8,7 +8,7 @@ namespace ChattingSystem.Models
 {
     public class ApplicationUser: IdentityUser
     {
-        public byte[] Photo { get; set; }
+        public string Photo { get; set; }
 
         public string ChatName { get; set; }
 
@@ -22,11 +22,13 @@ namespace ChattingSystem.Models
 
         // Тут устанавливаем связь с нашей таблицей
         public virtual ICollection<Message> Messages { get; set; }
+
         public virtual ICollection<PrivateMessage> PrivateMessages { get; set; }
 
         public ApplicationUser()
         {
             Messages = new List<Message>();
+
             PrivateMessages = new List<PrivateMessage>();
         }
     }

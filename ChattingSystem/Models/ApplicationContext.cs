@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace ChattingSystem.Models
 {
@@ -14,6 +10,8 @@ namespace ChattingSystem.Models
         public DbSet<Message> Messages { get; set; }
 
         public DbSet<PrivateMessage> PrivateMessages { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
 
         public static ApplicationContext Create()
         {

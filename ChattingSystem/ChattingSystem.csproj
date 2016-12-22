@@ -298,16 +298,36 @@
     <Compile Include="Migrations\201611280728577_UserConnectionId.Designer.cs">
       <DependentUpon>201611280728577_UserConnectionId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612011625235_Comment.cs" />
+    <Compile Include="Migrations\201612011625235_Comment.Designer.cs">
+      <DependentUpon>201612011625235_Comment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612011630052_Comment2.cs" />
+    <Compile Include="Migrations\201612011630052_Comment2.Designer.cs">
+      <DependentUpon>201612011630052_Comment2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612020929548_Reboot.cs" />
+    <Compile Include="Migrations\201612020929548_Reboot.Designer.cs">
+      <DependentUpon>201612020929548_Reboot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612020941243_CommentsComplete.cs" />
+    <Compile Include="Migrations\201612020941243_CommentsComplete.Designer.cs">
+      <DependentUpon>201612020941243_CommentsComplete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612050811068_Photo.cs" />
+    <Compile Include="Migrations\201612050811068_Photo.Designer.cs">
+      <DependentUpon>201612050811068_Photo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ApplicationUserManager.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\PrivateMessage.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="standart.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config">
@@ -325,6 +345,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
     <Content Include="scripts\jquery-1.12.4.min.map" />
+    <Content Include="Views\Chat\UserInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -335,6 +356,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Files\" />
+    <Folder Include="Photo\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201611040711136_DataMigration.resx">
@@ -351,6 +373,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611280728577_UserConnectionId.resx">
       <DependentUpon>201611280728577_UserConnectionId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612011625235_Comment.resx">
+      <DependentUpon>201612011625235_Comment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612011630052_Comment2.resx">
+      <DependentUpon>201612011630052_Comment2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612020929548_Reboot.resx">
+      <DependentUpon>201612020929548_Reboot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612020941243_CommentsComplete.resx">
+      <DependentUpon>201612020941243_CommentsComplete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612050811068_Photo.resx">
+      <DependentUpon>201612050811068_Photo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

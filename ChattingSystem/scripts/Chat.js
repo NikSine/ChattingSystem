@@ -5,41 +5,133 @@ $(function () {
     // Create a function that the hub can call to broadcast messages.
     chat.client.addMessage = function (name, id, message, photo) {
         // Html encode display name and message.
-
         var encodedName = $('<div />').text(name).html();
         var encodedMsg = $('<div />').text(message).html();
         // Add the message to the page.
         if (name != $('#displayname').val())
         {
-            $('#discussion').append('<div class="messagein id="'+id+'"><img class="chatimage img-circle" src="data:image/png;base64,' + photo + '"/>' + '&nbsp;&nbsp' + encodedName
-                + '<p><p>&nbsp;&nbsp' + linkify(encodedMsg) + '</div>').children(':last').hide().fadeIn(500);
+            $('#discussion').append('<div class="messagein" id="' + id + '"><img class="chatimage img-circle" src="' + photo + '"/>' + '&nbsp;&nbsp' + encodedName
+                + '<p><p class="textmargin">' + linkify(encodedMsg) + '</p><p class="textmargin"><a class ="commentMessage">Комментировать</a></p></div>').children(':last').hide().fadeIn(500);
         }
         else
         {
-            $('#discussion').append('<div id="message_' + id + '"' + 'class="messagein"><img class="chatimage img-circle" src="data:image/png;base64,' + photo + '"/>' + '&nbsp;&nbsp' + encodedName 
-               + '<p>&nbsp;&nbsp' + linkify(encodedMsg) + '<p>&nbsp;&nbsp<a class ="removeMessage" href="#">Удалить</a></p></div>').children(':last').hide().fadeIn(500);
+            $('#discussion').append('<div class="messagein" id="' + id + '"><img class="chatimage img-circle" src="' + photo + '"/>' + '&nbsp;&nbsp' + encodedName
+               + '<p><p class="textmargin">' + linkify(encodedMsg) + '</p></p><p class="textmargin"><a class ="commentMessage">Комментировать</a><a class ="removeMessage">Удалить</a></p></div>').children(':last').hide().fadeIn(500);
         }
-        $('div#room').scrollTop($('div#room')[0].scrollHeight);
+        $('#discussion').scrollTop($('#discussion')[0].scrollHeight);
     };
 
      
-    $(document).on('click', '.removeMessage', function () {
-        
-        console.log($(this).id);
+    $(document).on('click', '.removeMessage', function (e) {
+        if (confirm('Вы действительно хотите удалить сообщение?'))
+        {
+            chat.server.removeMessage($(e.target).parent().parent().attr('id'));
+            $(e.target).parent().parent().hide("slow", function () { $(this).remove(); })
+        }
+    });
+
+    chat.client.removeMessage = function (id) {
+        $('#' + id).hide("slow", function () { $(this).remove(); });
+    }
+
+    $(document).on('click', '.commentMessage', function (e) {
+
+        $(e.target).hide();
+
+        $(e.target).parent().parent().append('<div id="commentDiv"><input id="commentInput" type="text"/><button id="commentButton">Отправить</button><span id="closeCommentInputs" class="glyphicon glyphicon-remove"/></div>').children(':last').hide().fadeIn(500);
 
     });
 
-    chat.client.onConnected = function (id, userName, allUsers, allMessages) {
+    $(document).on('click', '#closeCommentInputs', function (e) {
+
+        $(e.target).parent().hide();
+
+        $(".commentMessage").show();
+    });
+   
+    $(document).on('click', '#commentButton', function (e) {
+
+        var text = $(e.target).parent().find('#commentInput').val();
+
+        var id = $(e.target).parent().parent().attr('id');
+
+        chat.server.commentMessage(text, id);
+
+        $(e.target).parent().hide();
+
+        $(".commentMessage").show();
+    });
+
+
+
+    chat.client.commentMessage = function (id, username, messageId, comment, photo) {
+
+        var encodedName = $('<div />').text(username).html();
+
+        var encodedComment = $('<div />').text(comment).html();
+
+        if (username == $('#displayname').val())
+        {
+            $('#' + messageId).append('<div id ="comment_' + id + '"class="commentblock1"><p><img class="chatimage img-circle" src="' + photo + '"/>'
+                + '&nbsp;&nbsp' + encodedName + '<span id="removeComment" class="glyphicon glyphicon-remove"/></p><p class="textmargin">'
+                + linkify(encodedComment) + '</p></div>').children(':last').hide().fadeIn(500);
+        }
+        else
+        {
+            $('#' + messageId).append('<div id ="comment_' + id + '"class="commentblock2"><p><img class="chatimage img-circle" src="' + photo + '"/>'
+               + '&nbsp;&nbsp' + encodedName + '</p><p class="textmargin">'
+               + linkify(encodedComment) + '</p></div>').children(':last').hide().fadeIn(500);
+        }
+    };
+
+    $(document).on('click', '#removeComment', function (e) {
+        
+        if (confirm('Вы действительно хотите удалить комментарий?'))
+        {
+            var id = $(e.target).parent().parent().attr("id").replace("comment_", "");
+
+            chat.server.removeComment(id);
+
+            $(e.target).parent().parent().hide("slow", function () { $(this).remove(); })
+        }        
+    });
+
+    //$(document).on('click', '.userinfo', function (e) {
+    //    $.ajax({
+    //        url: '/Chat/UserInfo/',
+    //        data: { name: }
+    //    }).done(function () {
+    //        alert('Added');
+    //    });
+    //});
+
+
+    chat.client.removeComment = function (id) {
+        $('#comment_' + id).hide("slow", function () { $(this).remove(); });
+    }
+
+    chat.client.onConnected = function (id, userName, allUsers, allMessages, allComments) {
         $('#hdId').val(id);
         $("#displayname").val(userName);
         $(".loader").fadeOut("slow");
+       
         // Добавление всех пользователей
-        for (userId in allUsers) {
+
+        for (userId in allUsers)
+        {
             AddUser(userId, allUsers[userId]);
         }
-        for (var i = 0; i < allMessages.length; i++) {
+
+        for (var i = 0; i < allMessages.length; i++)
+        {
             chat.client.addMessage(allMessages[i].ChatName, allMessages[i].Id, allMessages[i].MessageText, allMessages[i].Photo)
         }
+
+        for (var i = 0; i < allComments.length; i++)
+        {
+            chat.client.commentMessage(allComments[i].Id, allComments[i].ChatName, allComments[i].MessageId, allComments[i].CommentText, allComments[i].Photo)
+        }
+        
     }
 
     // Добавляем нового пользователя
@@ -55,27 +147,32 @@ $(function () {
     }
 
 
-    chat.client.sendPrivateMessage = function (windowId, fromUserName, message) {
+    chat.client.sendPrivateMessage = function (windowId, fromUserName, message, photo) {
 
         var ctrId = 'private_' + windowId;
 
 
-        if ($('#' + ctrId).length == 0) {
-
+        if ($('#' + ctrId).length == 0)
+        {
             createPrivateChatWindow(windowId, ctrId, fromUserName);
-
         }
 
-        $('#' + ctrId).find('#divMessage').append('<div class="message"><span class="userName">' + fromUserName + '</span><p>' + linkify(message) + '</p></div>');
+        if (fromUserName != $("#displayname").val())
+        {
+            $('#' + ctrId).find('#divMessage').append('<div class="message2"><img class="privatechatimage img-circle" src="' + photo + '"/>&nbsp<span class="userName">' + fromUserName + '</span><p>' + linkify(message) + '</p></div>').children(':last').hide().fadeIn(500);
+        }
+        else
+        {
+            $('#' + ctrId).find('#divMessage').append('<div class="message"><img class="privatechatimage img-circle" src="' + photo + '"/>&nbsp<span class="userName">' + fromUserName + '</span><p>' + linkify(message) + '</p></div>').children(':last').hide().fadeIn(500);
+        }
+        
 
         // set scrollbar
         var height = $('#' + ctrId).find('#divMessage')[0].scrollHeight;
+
         $('#' + ctrId).find('#divMessage').scrollTop(height);
 
     }
-
-
-
 
     // Get the user name and store it to prepend to messages.
     //$('#displayname').val(prompt('Enter your name:', ''));
@@ -98,25 +195,14 @@ $(function () {
             }
         });
 
+        $('#discussion').scrollTop($('#discussion')[0].scrollHeight);
+
     });
 
     $('#logout').click(function () {
         $.connection.hub.stop();
     });
-
-
-
-
 });
-
-
-
-
-$('#messageRemove').click(function () {
-    alert("sssss");
-});
- 
-
 
 function AddUser(id, userName) {
 
@@ -124,21 +210,19 @@ function AddUser(id, userName) {
 
     var code = "";
     if (userId != id) {
-        code = $('<div style = "cursor:pointer;" id="' + id + '"><b>' + userName + '</b></p>');
-        $(code).dblclick(function () {
+        code = $('<p><a class="noselect" id="' + id + '">' + userName + '</a></p>');
+        $(code).click(function () {
 
-            var id = $(this).attr('id');
+            var id = $(this).children().attr('id');
 
-            if (userId != id){
+            if (userId != id) {
                 OpenPrivateChatWindow(id, userName);
 
-                }
+            }
 
         });    
     }
-
     $("#chatusers").append(code);
-
 }
 
 
@@ -157,22 +241,18 @@ function OpenPrivateChatWindow(id, userName) {
 
 function createPrivateChatWindow(userId, ctrId, userName) {
 
-    var div = '<div id = "' + ctrId +'">'+ '<div style="border: 1px solid white; width:223px; background-color:#14141f; color:white;" class="ui-widget-content draggable " rel="0">' +
-               '<div class=" header" style=" cursor:move; color:white; width:223px; border-bottom:1px solid white;">' +
-                  '<div  style="float:right;">' +
-                      '<span id="imgDelete" class="glyphicon glyphicon-remove"  style="cursor:pointer;"/>' +
-                   '</div>' +
-
-                   '<span class="selText" rel="0">' + userName + '</span>' +
+    var div = '<div id = "' + ctrId + '" class="chatwindowborder ui-widget-content draggable">' +
+               '<div class="header">' +
+                   '<span id="imgDelete" class="glyphicon glyphicon-remove"/>' +
+                   '<span class="selText">' + userName + '</span>' +
                '</div>' +
-               '<div id="divMessage" class="messageArea" style="height:200px;overflow-y:auto;" >' +
+               '<div id="divMessage" class="messageArea">' +
 
                '</div>' +
-              
-           '</div>'+
-                 '<div class="buttonBar">' +
-                   '<input id="txtPrivateMessage" class="msgText" type="text"   />' +
-                  '<input id="btnSendMessage" class="submitButton button" type="button" value="Send"   />' +
+            
+                 '<div class="inputs">' +
+                  '<input id="txtPrivateMessage" class="msgText" type="text"   />' +
+                  '<input id="btnSendMessage" class="submitButton button" type="button" value="Отправить" placeholder="Ввод сообщения"/>' +
                     '</div>'
               + '</div>';
 
@@ -207,7 +287,7 @@ function createPrivateChatWindow(userId, ctrId, userName) {
 
 
 function AddDivToContainer($div) {
-    $('#container').append($div);
+    $('#container').append($div).children(':last').hide().fadeIn(500);
 
     ($div).position({
             of: $(window)
@@ -220,6 +300,8 @@ function AddDivToContainer($div) {
 
         }
     });
+
+    $()
 }
 
     function linkify(text) {
@@ -258,9 +340,6 @@ function AddDivToContainer($div) {
         }
     });
 
-    $('#messageRemove').click(function () {
-        alert("hello");
-    });
 
 
     //(function () {
