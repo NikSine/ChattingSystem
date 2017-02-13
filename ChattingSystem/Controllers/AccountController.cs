@@ -12,7 +12,6 @@ namespace ChattingSystem.Controllers
 {
     public class AccountController : Controller
     {
-   
         #region Register
         private ApplicationUserManager UserManager
         {

@@ -70,11 +70,9 @@ namespace ChattingSystem.Controllers
                     fileName = Path.GetFileName(messagefile.FileName);
 
                     var path = Path.Combine(Server.MapPath("~/Files/"), fileName);
-
-                    if (!path.Contains(fileName))
-                    {
-                        messagefile.SaveAs(path);
-                    }            
+             
+                    messagefile.SaveAs(path);
+                               
                 }
             }
             var completepath = Request.Url.GetLeftPart(UriPartial.Authority)+"/Chat/Download?FileName="+fileName;
@@ -104,22 +102,3 @@ namespace ChattingSystem.Controllers
 
     }
 }
-//string currentUserId = User.Identity.GetUserId();
-
-//var user = context.Users.FirstOrDefault(x => x.Id == currentUserId);
-
-//            if (photo != null)
-//            {
-//                MemoryStream target = new MemoryStream();
-//photo.InputStream.CopyTo(target);
-//                byte[] data = target.ToArray();
-//user.Photo = data;
-//                context.SaveChanges();
-//            }
-
-//            if (nickname != user.ChatName)
-//            {
-//                user.ChatName = nickname;
-//                context.SaveChanges();
-//            }
-//            return RedirectToAction("Index");

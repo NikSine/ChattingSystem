@@ -65,12 +65,9 @@ namespace ChattingSystem.Hubs
 
             if (toUser.Key != null && fromUser.Key != null)
             {
-                // send to 
                 Clients.Client(toUserId).sendPrivateMessage(fromUserId, fromUser.Value, message, currentUser.Photo);
 
-                // send to caller user
                 Clients.Caller.sendPrivateMessage(toUserId, fromUser.Value, message, currentUser.Photo);
-
             }
 
         }

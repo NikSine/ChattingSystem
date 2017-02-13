@@ -1,5 +1,4 @@
-﻿
-$(function () {
+﻿$(function () {
     // Declare a proxy to reference the hub.
     var chat = $.connection.chatHub;
     // Create a function that the hub can call to broadcast messages.
@@ -96,16 +95,6 @@ $(function () {
         }        
     });
 
-    //$(document).on('click', '.userinfo', function (e) {
-    //    $.ajax({
-    //        url: '/Chat/UserInfo/',
-    //        data: { name: }
-    //    }).done(function () {
-    //        alert('Added');
-    //    });
-    //});
-
-
     chat.client.removeComment = function (id) {
         $('#comment_' + id).hide("slow", function () { $(this).remove(); });
     }
@@ -114,8 +103,6 @@ $(function () {
         $('#hdId').val(id);
         $("#displayname").val(userName);
         $(".loader").fadeOut("slow");
-       
-        // Добавление всех пользователей
 
         for (userId in allUsers)
         {
@@ -134,18 +121,15 @@ $(function () {
         
     }
 
-    // Добавляем нового пользователя
     chat.client.onNewUserConnected = function (id, userName) {
         AddUser(id, userName);
     }
 
-    // Удаляем пользователя
     chat.client.onUserDisconnected = function (id, userName) {
         var ctrId = 'private_' + id;
         $('#' + ctrId).remove();
         $('#' + id).remove();
     }
-
 
     chat.client.sendPrivateMessage = function (windowId, fromUserName, message, photo) {
 
@@ -166,26 +150,20 @@ $(function () {
             $('#' + ctrId).find('#divMessage').append('<div class="message"><img class="privatechatimage img-circle" src="' + photo + '"/>&nbsp<span class="userName">' + fromUserName + '</span><p>' + linkify(message) + '</p></div>').children(':last').hide().fadeIn(500);
         }
         
-
-        // set scrollbar
         var height = $('#' + ctrId).find('#divMessage')[0].scrollHeight;
 
         $('#' + ctrId).find('#divMessage').scrollTop(height);
 
     }
 
-    // Get the user name and store it to prepend to messages.
-    //$('#displayname').val(prompt('Enter your name:', ''));
-
-    // Set initial focus to message input box.
     $('#message').focus();
-    // Start the connection.
+
     $.connection.hub.start().done(function () {
 
         $('#sendmessage').click(function () {
-            // Call the Send method on the hub.
+
             chat.server.send($('#message').val());
-            // Clear text box and reset focus for next comment.
+
             $('#message').val('').focus();
         });
 
@@ -258,12 +236,10 @@ function createPrivateChatWindow(userId, ctrId, userName) {
 
     var $div = $(div);
 
-    // DELETE BUTTON IMAGE
     $div.find('#imgDelete').click(function () {
         $('#' + ctrId).remove();
     });
 
-    // Send Button event
     $div.find("#btnSendMessage").click(function () {
 
         $textBox = $div.find("#txtPrivateMessage");
@@ -275,7 +251,6 @@ function createPrivateChatWindow(userId, ctrId, userName) {
         }
     });
 
-    // Text Box event
     $div.find("#txtPrivateMessage").keypress(function (e) {
         if (e.which == 13) {
             $div.find("#btnSendMessage").click();
@@ -330,8 +305,8 @@ function AddDivToContainer($div) {
                 type: "POST",
                 url: "/Chat/Upload/",
                 enctype: 'multipart/form-data',
-                processData: false,  // do not process the data as url encoded params
-                contentType: false,  // by default jQuery sets this to urlencoded string
+                processData: false, 
+                contentType: false,  
                 data: data,
                 success: function (response) {
                     $('#message').val(response);
@@ -339,36 +314,3 @@ function AddDivToContainer($div) {
             });
         }
     });
-
-
-
-    //(function () {
-    //    var app = angular.module('chat-app', []);
-
-    //    app.controller('ChatController', function ($scope) {
-    //        // scope variables
-    //        $scope.name = 'Guest'; // holds the user's name
-    //        $scope.message = ''; // holds the new message
-    //        $scope.messages = []; // collection of messages coming from server
-    //        $scope.chatHub = null; // holds the reference to hub
-
-    //        $scope.chatHub = $.connection.chatHub; // initializes hub
-    //        $.connection.hub.start(); // starts hub
-
-    //        // register a client method on hub to be invoked by the server
-    //        $scope.chatHub.client.addMessage = function (name, message) {
-    //            var newMessage = name + ' says: ' + message;
-
-    //            // push the newly coming message to the collection of messages
-    //            $scope.messages.push(newMessage);
-    //            $scope.$apply();
-    //        };
-
-    //        $scope.newMessage = function () {
-    //            // sends a new message to the server
-    //            $scope.chatHub.server.Send($scope.message);
-
-    //            $scope.message = '';
-    //        };
-    //    });
-    //}());
